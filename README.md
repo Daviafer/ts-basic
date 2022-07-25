@@ -17,5 +17,9 @@ Instalação:
 - Usando o npm = (npm i -g typescript)
 - Adicionar forma global com a flag -g 
 - A parti da instalação temos como executar/compilar TS em qualquer local da nossa máquina com o comando tsc (tsc --version)
-
-
+EXECUÇÃO
+- Verificar arquivo tsconfig.json. 
+- Caso seja necessário, alterar o outDir ( diretório saída, deploy, onde tem o JS) e rootDir (diretório raiz, diretório do desenvolvimento TS)
+- Com o código em TS, executar no terminal: tsc
+- Execução automática TS: tsc -w
+- Após configuração e executar tsc, será gerado no deploy (outDir) o arquivo JS para compilação do TS.
