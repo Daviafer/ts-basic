@@ -97,3 +97,188 @@ const camisa = {
   size: Size.M,
 }
 console.log(camisa)
+
+//==============================
+// literal types
+//==============================
+// declarando um valor como um tipo ou nulo
+let teste: "autenticado" | null
+teste = "autenticado" /* não pode ser alterado */
+teste = null
+
+//==============================
+// function
+//==============================
+// função precisam ser tipadas
+function sum(a: number, b: number) {
+  return a + b;  
+}
+console.log(sum(23,23))
+
+//retornando uma string - (parametro: tipo)
+function sayHelloTo(name:string): string {
+  return `Hello ${name}`
+}
+console.log(sayHelloTo("Davi"))
+
+// sem retorno - void
+function logger(msg:string): void {
+  console.log(msg)
+}
+logger("Teste...")
+
+// greet - o ? é opcional, mas precisa usar algum tratamento
+function greeting(name:string, greet?: string): void  {
+  if (greet) {
+    console.log(`Olá ${greet} ${name}`)
+    return
+  }
+  console.log(`Olá ${name}`)
+}
+greeting("José") /* sem o greet  - greet é opcional*/
+greeting("Pedro", "sr") /* informando greet */
+
+//==============================
+// Interfaces
+//==============================
+interface MathFunctionParams{
+  n1: number
+  n2: number
+}
+function sumNumbers(nums:MathFunctionParams) {
+  return nums.n1 + nums.n2
+}
+console.log(sumNumbers({n1: 1, n2: 2}))
+
+function multiplyNumbers(nums:MathFunctionParams) {
+  return nums.n1 * nums.n2
+}
+// tipando para reutilizar as variáveis
+const someNumbers: MathFunctionParams = {
+  n1: 5,
+  n2: 4,
+}
+// ex
+console.log(multiplyNumbers(someNumbers))
+
+//==============================
+// narrowing - checagem de tipos
+//==============================
+function doSomething(info:number | boolean){
+  if (typeof info === "number") {
+    console.log(`O número é ${info}`)
+    return
+  }
+  console.log("Não foi passado número")
+}
+doSomething(5)
+doSomething(true)
+
+//==============================
+// Generics - funções mais genérica
+//==============================
+function showArraysItems<T>(arr:T[]) {
+  arr.forEach((item) => {
+    console.log(`ITEM: ${item}`)
+  })
+}
+const a1 = [1, 2, 3]
+const a2 = ["a", "s", "d"]
+
+showArraysItems(a1)
+showArraysItems(a2)
+
+//==============================
+// Classe
+//==============================
+class User {
+  name: string
+  role: string
+  isApproved: boolean
+
+  constructor(name: string, role: string, isApproved: boolean) {
+    this.name = name
+    this.role = role
+    this.isApproved = isApproved
+  }
+  // método
+  showUserName(){
+    console.log(`O nome do usuário é: ${this.name}`)
+  }
+  //argumento 
+  showUserRole(canShow: boolean): void{
+    if (canShow) {
+      console.log(`Idade do usuário é: ${this.role}`)
+      return
+    }
+    console.log("Informação restrita")
+  }
+}
+const pessoa1 = new User("Fulano", "Admin", true)
+console.log(pessoa1)
+
+pessoa1.showUserName()
+pessoa1.showUserRole(true) // mostrando role (cargo, função)
+
+//==============================
+// Interface
+//==============================
+interface IVehicle{
+  brand: string
+  showBrand(): void
+}
+class Car implements IVehicle {
+  brand: string
+  wheels: number
+  constructor(brand: string, wheels: number) {
+    this.brand = brand
+    this.wheels = wheels
+  }
+  showBrand(): void {
+    console.log(`A marca do carro é: ${this.brand}`)
+  }
+}
+const fusca = new Car("VW", 4)
+
+fusca.showBrand()
+
+//==============================
+// Herança
+//==============================
+class SuperCar extends Car{
+  engine: number
+
+  constructor(brand: string, wheels: number, engine: number){
+    super(brand, wheels)
+    this.engine = engine
+  }
+}
+const a4 = new SuperCar("Audi", 4, 2.0)
+console.log(a4)
+a4.showBrand() /* método classe pai */
+
+//==============================
+// Decorators 
+//==============================
+// validação de dados; construir um evento observável em algum ponto de uma classe / função
+// descomentar o "experimentalDecorator" do tsconfig.json
+
+// constructor decorator - inserindo 2 propriedades ao objeto Person
+function BaseParameters() {
+  return function <T extends { new (... args: any[]): {} }> (constructor: T){
+    return class extends constructor {
+      id = Math.random()
+      createdAt = new Date()
+    }
+  }
+}
+@BaseParameters()
+class Person {
+  name: string
+  constructor(name: string) {
+    this.name = name
+  }
+}
+const sam = new Person("Ciclano")
+console.log(sam)
+
